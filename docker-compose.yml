@@ -1,0 +1,57 @@
+name: warehouse-sim
+
+# Shared hardening applied to every service: no privilege escalation, no Linux
+# capabilities, and an immutable root filesystem with explicit writable tmpfs.
+x-hardening: &hardening
+  init: true
+  security_opt:
+    - no-new-privileges:true
+  cap_drop:
+    - ALL
+  read_only: true
+  cpus: 2.0
+  mem_limit: 2g
+
+services:
+  # Browser-based 3D viewer. `docker compose up viewer`, then open
+  # http://localhost:6080/vnc.html?autoconnect=1&resize=scale
+  viewer:
+    <<: *hardening
+    build:
+      context: .
+      target: viewer
+    image: warehouse-sim:viewer
+    ports:
+      # Bound to loopback: the VNC desktop has no password, so it must never be
+      # reachable from the network. Use an SSH tunnel for remote access.
+      - "127.0.0.1:6080:6080"
+    tmpfs:
+      - /tmp:size=64m
+      - /home/sim:size=32m,uid=10001,gid=10001
+    mem_limit: 4g
+    shm_size: 512m
+
+  # Headless simulation run: `docker compose run --rm sim`
+  sim:
+    <<: *hardening
+    profiles: ["cli"]
+    build:
+      context: .
+      target: headless
+    image: warehouse-sim:headless
+    tmpfs:
+      - /tmp:size=64m
+    command: ["python", "main.py"]
+
+  # Test suite: `docker compose run --rm tests`
+  tests:
+    <<: *hardening
+    profiles: ["cli"]
+    build:
+      context: .
+      target: headless
+    image: warehouse-sim:headless
+    tmpfs:
+      - /tmp:size=64m
+    # cacheprovider is disabled because the root filesystem is read-only.
+    command: ["python", "-m", "pytest", "-q", "-p", "no:cacheprovider"]

@@ -1,0 +1,249 @@
+<mujoco>
+    <option gravity="0 0 -9.81" timestep="0.002" />
+    <default>
+        <geom contype="1" conaffinity="1" group="0"/>
+    </default>
+    <asset>
+        <texture type="2d" name="grid" builtin="checker" rgb1=".2 .3 .4" rgb2=".1 .2 .3" width="512" height="512"/>
+        <material name="grid_mat" texture="grid" texrepeat="10 10" texuniform="true" reflectance="0.2"/>
+        <material name="shelf_mat" rgba="0.55 0.45 0.35 1" />
+        <material name="wall_mat" rgba="0.25 0.25 0.30 1" />
+        <material name="pkg_orange" rgba="0.95 0.55 0.1 1" />
+        <material name="pkg_blue" rgba="0.15 0.45 0.95 1" />
+        <material name="pkg_purple" rgba="0.75 0.15 0.85 1" />
+        <material name="pkg_green" rgba="0.15 0.85 0.45 1" />
+        <material name="mat_parking" rgba="0.2 0.5 1.0 0.4"/>
+        <material name="mat_outbound" rgba="1.0 0.2 0.2 0.4"/>
+        <material name="mat_inbound" rgba="1.0 1.0 0.2 0.4"/>
+    </asset>
+    <worldbody>
+        <light directional="true" diffuse=".8 .8 .8" specular=".2 .2 .2" pos="0 0 10" dir="0 0 -1"/>
+        <camera name="top_down" pos="5 5 12" zaxis="0 0 1" fovy="45"/>
+        <camera name="isometric" pos="5 -8 10" xyaxes="1 0 0 0 0.707 0.707" fovy="55"/>
+        <!-- Floor -->
+        <geom type="plane" size="10 10 0.1" material="grid_mat" contype="1" conaffinity="1"/>
+
+        <!-- ============== VISUAL ZONES ============== -->
+        <!-- Parking (x=0..9, y=9) -->
+        <geom name="zone_parking" type="box" size="5.0 0.5 0.005" pos="4.5 9.0 0.005" material="mat_parking" contype="0" conaffinity="0"/>
+        <!-- Inbound Dock / Get Place (x=9, y=1) -->
+        <geom name="zone_inbound" type="box" size="0.5 0.5 0.005" pos="9.0 1.0 0.005" material="mat_inbound" contype="0" conaffinity="0"/>
+        <geom name="inbound_package_stand" type="box" size="0.3 0.3 0.02" pos="9.0 1.0 0.4" material="shelf_mat"/>
+        <!-- Outbound Dock / Drop-off (x=9, y=8) -->
+        <geom name="zone_outbound" type="box" size="0.5 0.5 0.005" pos="9.0 8.0 0.005" material="mat_outbound" contype="0" conaffinity="0"/>
+        <geom name="outbound_package_stand" type="box" size="0.3 0.3 0.02" pos="9.0 8.0 0.4" material="shelf_mat"/>
+
+        <!-- ============== PERIMETER WALLS ============== -->
+        <geom name="wall_south" type="box" size="5.5 0.05 0.5" pos="5 -0.05 0.5" material="wall_mat"/>
+        <geom name="wall_north" type="box" size="5.5 0.05 0.5" pos="5 10.05 0.5" material="wall_mat"/>
+        <geom name="wall_west" type="box" size="0.05 5.05 0.5" pos="-0.05 5 0.5" material="wall_mat"/>
+        <geom name="wall_east" type="box" size="0.05 5.05 0.5" pos="10.05 5 0.5" material="wall_mat"/>
+
+        <!-- ============== SHELF ROW x=2, y=2..7 ============== -->
+        <body name="shelf_2_2" pos="2 2 0"><geom name="shelf_2_2_tier_0" type="box" size="0.3 0.4 0.02" pos="0 0 0.4" material="shelf_mat"/><geom name="shelf_2_2_tier_1" type="box" size="0.3 0.4 0.02" pos="0 0 0.8" material="shelf_mat"/><geom name="shelf_2_2_leg_sw" type="cylinder" size="0.02 0.4" pos="-0.25 -0.35 0.4" rgba="0.4 0.4 0.4 1"/><geom name="shelf_2_2_leg_se" type="cylinder" size="0.02 0.4" pos="0.25 -0.35 0.4" rgba="0.4 0.4 0.4 1"/><geom name="shelf_2_2_leg_nw" type="cylinder" size="0.02 0.4" pos="-0.25 0.35 0.4" rgba="0.4 0.4 0.4 1"/><geom name="shelf_2_2_leg_ne" type="cylinder" size="0.02 0.4" pos="0.25 0.35 0.4" rgba="0.4 0.4 0.4 1"/></body>
+        <body name="shelf_2_3" pos="2 3 0"><geom name="shelf_2_3_tier_0" type="box" size="0.3 0.4 0.02" pos="0 0 0.4" material="shelf_mat"/><geom name="shelf_2_3_tier_1" type="box" size="0.3 0.4 0.02" pos="0 0 0.8" material="shelf_mat"/><geom name="shelf_2_3_leg_sw" type="cylinder" size="0.02 0.4" pos="-0.25 -0.35 0.4" rgba="0.4 0.4 0.4 1"/><geom name="shelf_2_3_leg_se" type="cylinder" size="0.02 0.4" pos="0.25 -0.35 0.4" rgba="0.4 0.4 0.4 1"/><geom name="shelf_2_3_leg_nw" type="cylinder" size="0.02 0.4" pos="-0.25 0.35 0.4" rgba="0.4 0.4 0.4 1"/><geom name="shelf_2_3_leg_ne" type="cylinder" size="0.02 0.4" pos="0.25 0.35 0.4" rgba="0.4 0.4 0.4 1"/></body>
+        <body name="shelf_2_4" pos="2 4 0"><geom name="shelf_2_4_tier_0" type="box" size="0.3 0.4 0.02" pos="0 0 0.4" material="shelf_mat"/><geom name="shelf_2_4_tier_1" type="box" size="0.3 0.4 0.02" pos="0 0 0.8" material="shelf_mat"/><geom name="shelf_2_4_leg_sw" type="cylinder" size="0.02 0.4" pos="-0.25 -0.35 0.4" rgba="0.4 0.4 0.4 1"/><geom name="shelf_2_4_leg_se" type="cylinder" size="0.02 0.4" pos="0.25 -0.35 0.4" rgba="0.4 0.4 0.4 1"/><geom name="shelf_2_4_leg_nw" type="cylinder" size="0.02 0.4" pos="-0.25 0.35 0.4" rgba="0.4 0.4 0.4 1"/><geom name="shelf_2_4_leg_ne" type="cylinder" size="0.02 0.4" pos="0.25 0.35 0.4" rgba="0.4 0.4 0.4 1"/></body>
+        <body name="shelf_2_5" pos="2 5 0"><geom name="shelf_2_5_tier_0" type="box" size="0.3 0.4 0.02" pos="0 0 0.4" material="shelf_mat"/><geom name="shelf_2_5_tier_1" type="box" size="0.3 0.4 0.02" pos="0 0 0.8" material="shelf_mat"/><geom name="shelf_2_5_leg_sw" type="cylinder" size="0.02 0.4" pos="-0.25 -0.35 0.4" rgba="0.4 0.4 0.4 1"/><geom name="shelf_2_5_leg_se" type="cylinder" size="0.02 0.4" pos="0.25 -0.35 0.4" rgba="0.4 0.4 0.4 1"/><geom name="shelf_2_5_leg_nw" type="cylinder" size="0.02 0.4" pos="-0.25 0.35 0.4" rgba="0.4 0.4 0.4 1"/><geom name="shelf_2_5_leg_ne" type="cylinder" size="0.02 0.4" pos="0.25 0.35 0.4" rgba="0.4 0.4 0.4 1"/></body>
+        <body name="shelf_2_6" pos="2 6 0"><geom name="shelf_2_6_tier_0" type="box" size="0.3 0.4 0.02" pos="0 0 0.4" material="shelf_mat"/><geom name="shelf_2_6_tier_1" type="box" size="0.3 0.4 0.02" pos="0 0 0.8" material="shelf_mat"/><geom name="shelf_2_6_leg_sw" type="cylinder" size="0.02 0.4" pos="-0.25 -0.35 0.4" rgba="0.4 0.4 0.4 1"/><geom name="shelf_2_6_leg_se" type="cylinder" size="0.02 0.4" pos="0.25 -0.35 0.4" rgba="0.4 0.4 0.4 1"/><geom name="shelf_2_6_leg_nw" type="cylinder" size="0.02 0.4" pos="-0.25 0.35 0.4" rgba="0.4 0.4 0.4 1"/><geom name="shelf_2_6_leg_ne" type="cylinder" size="0.02 0.4" pos="0.25 0.35 0.4" rgba="0.4 0.4 0.4 1"/></body>
+        <body name="shelf_2_7" pos="2 7 0"><geom name="shelf_2_7_tier_0" type="box" size="0.3 0.4 0.02" pos="0 0 0.4" material="shelf_mat"/><geom name="shelf_2_7_tier_1" type="box" size="0.3 0.4 0.02" pos="0 0 0.8" material="shelf_mat"/><geom name="shelf_2_7_leg_sw" type="cylinder" size="0.02 0.4" pos="-0.25 -0.35 0.4" rgba="0.4 0.4 0.4 1"/><geom name="shelf_2_7_leg_se" type="cylinder" size="0.02 0.4" pos="0.25 -0.35 0.4" rgba="0.4 0.4 0.4 1"/><geom name="shelf_2_7_leg_nw" type="cylinder" size="0.02 0.4" pos="-0.25 0.35 0.4" rgba="0.4 0.4 0.4 1"/><geom name="shelf_2_7_leg_ne" type="cylinder" size="0.02 0.4" pos="0.25 0.35 0.4" rgba="0.4 0.4 0.4 1"/></body>
+
+        <!-- ============== SHELF ROW x=4, y=2..7 ============== -->
+        <body name="shelf_4_2" pos="4 2 0"><geom name="shelf_4_2_tier_0" type="box" size="0.3 0.4 0.02" pos="0 0 0.4" material="shelf_mat"/><geom name="shelf_4_2_tier_1" type="box" size="0.3 0.4 0.02" pos="0 0 0.8" material="shelf_mat"/><geom name="shelf_4_2_leg_sw" type="cylinder" size="0.02 0.4" pos="-0.25 -0.35 0.4" rgba="0.4 0.4 0.4 1"/><geom name="shelf_4_2_leg_se" type="cylinder" size="0.02 0.4" pos="0.25 -0.35 0.4" rgba="0.4 0.4 0.4 1"/><geom name="shelf_4_2_leg_nw" type="cylinder" size="0.02 0.4" pos="-0.25 0.35 0.4" rgba="0.4 0.4 0.4 1"/><geom name="shelf_4_2_leg_ne" type="cylinder" size="0.02 0.4" pos="0.25 0.35 0.4" rgba="0.4 0.4 0.4 1"/></body>
+        <body name="shelf_4_3" pos="4 3 0"><geom name="shelf_4_3_tier_0" type="box" size="0.3 0.4 0.02" pos="0 0 0.4" material="shelf_mat"/><geom name="shelf_4_3_tier_1" type="box" size="0.3 0.4 0.02" pos="0 0 0.8" material="shelf_mat"/><geom name="shelf_4_3_leg_sw" type="cylinder" size="0.02 0.4" pos="-0.25 -0.35 0.4" rgba="0.4 0.4 0.4 1"/><geom name="shelf_4_3_leg_se" type="cylinder" size="0.02 0.4" pos="0.25 -0.35 0.4" rgba="0.4 0.4 0.4 1"/><geom name="shelf_4_3_leg_nw" type="cylinder" size="0.02 0.4" pos="-0.25 0.35 0.4" rgba="0.4 0.4 0.4 1"/><geom name="shelf_4_3_leg_ne" type="cylinder" size="0.02 0.4" pos="0.25 0.35 0.4" rgba="0.4 0.4 0.4 1"/></body>
+        <body name="shelf_4_4" pos="4 4 0"><geom name="shelf_4_4_tier_0" type="box" size="0.3 0.4 0.02" pos="0 0 0.4" material="shelf_mat"/><geom name="shelf_4_4_tier_1" type="box" size="0.3 0.4 0.02" pos="0 0 0.8" material="shelf_mat"/><geom name="shelf_4_4_leg_sw" type="cylinder" size="0.02 0.4" pos="-0.25 -0.35 0.4" rgba="0.4 0.4 0.4 1"/><geom name="shelf_4_4_leg_se" type="cylinder" size="0.02 0.4" pos="0.25 -0.35 0.4" rgba="0.4 0.4 0.4 1"/><geom name="shelf_4_4_leg_nw" type="cylinder" size="0.02 0.4" pos="-0.25 0.35 0.4" rgba="0.4 0.4 0.4 1"/><geom name="shelf_4_4_leg_ne" type="cylinder" size="0.02 0.4" pos="0.25 0.35 0.4" rgba="0.4 0.4 0.4 1"/></body>
+        <body name="shelf_4_5" pos="4 5 0"><geom name="shelf_4_5_tier_0" type="box" size="0.3 0.4 0.02" pos="0 0 0.4" material="shelf_mat"/><geom name="shelf_4_5_tier_1" type="box" size="0.3 0.4 0.02" pos="0 0 0.8" material="shelf_mat"/><geom name="shelf_4_5_leg_sw" type="cylinder" size="0.02 0.4" pos="-0.25 -0.35 0.4" rgba="0.4 0.4 0.4 1"/><geom name="shelf_4_5_leg_se" type="cylinder" size="0.02 0.4" pos="0.25 -0.35 0.4" rgba="0.4 0.4 0.4 1"/><geom name="shelf_4_5_leg_nw" type="cylinder" size="0.02 0.4" pos="-0.25 0.35 0.4" rgba="0.4 0.4 0.4 1"/><geom name="shelf_4_5_leg_ne" type="cylinder" size="0.02 0.4" pos="0.25 0.35 0.4" rgba="0.4 0.4 0.4 1"/></body>
+        <body name="shelf_4_6" pos="4 6 0"><geom name="shelf_4_6_tier_0" type="box" size="0.3 0.4 0.02" pos="0 0 0.4" material="shelf_mat"/><geom name="shelf_4_6_tier_1" type="box" size="0.3 0.4 0.02" pos="0 0 0.8" material="shelf_mat"/><geom name="shelf_4_6_leg_sw" type="cylinder" size="0.02 0.4" pos="-0.25 -0.35 0.4" rgba="0.4 0.4 0.4 1"/><geom name="shelf_4_6_leg_se" type="cylinder" size="0.02 0.4" pos="0.25 -0.35 0.4" rgba="0.4 0.4 0.4 1"/><geom name="shelf_4_6_leg_nw" type="cylinder" size="0.02 0.4" pos="-0.25 0.35 0.4" rgba="0.4 0.4 0.4 1"/><geom name="shelf_4_6_leg_ne" type="cylinder" size="0.02 0.4" pos="0.25 0.35 0.4" rgba="0.4 0.4 0.4 1"/></body>
+        <body name="shelf_4_7" pos="4 7 0"><geom name="shelf_4_7_tier_0" type="box" size="0.3 0.4 0.02" pos="0 0 0.4" material="shelf_mat"/><geom name="shelf_4_7_tier_1" type="box" size="0.3 0.4 0.02" pos="0 0 0.8" material="shelf_mat"/><geom name="shelf_4_7_leg_sw" type="cylinder" size="0.02 0.4" pos="-0.25 -0.35 0.4" rgba="0.4 0.4 0.4 1"/><geom name="shelf_4_7_leg_se" type="cylinder" size="0.02 0.4" pos="0.25 -0.35 0.4" rgba="0.4 0.4 0.4 1"/><geom name="shelf_4_7_leg_nw" type="cylinder" size="0.02 0.4" pos="-0.25 0.35 0.4" rgba="0.4 0.4 0.4 1"/><geom name="shelf_4_7_leg_ne" type="cylinder" size="0.02 0.4" pos="0.25 0.35 0.4" rgba="0.4 0.4 0.4 1"/></body>
+
+        <!-- ============== SHELF ROW x=6, y=2..7 ============== -->
+        <body name="shelf_6_2" pos="6 2 0"><geom name="shelf_6_2_tier_0" type="box" size="0.3 0.4 0.02" pos="0 0 0.4" material="shelf_mat"/><geom name="shelf_6_2_tier_1" type="box" size="0.3 0.4 0.02" pos="0 0 0.8" material="shelf_mat"/><geom name="shelf_6_2_leg_sw" type="cylinder" size="0.02 0.4" pos="-0.25 -0.35 0.4" rgba="0.4 0.4 0.4 1"/><geom name="shelf_6_2_leg_se" type="cylinder" size="0.02 0.4" pos="0.25 -0.35 0.4" rgba="0.4 0.4 0.4 1"/><geom name="shelf_6_2_leg_nw" type="cylinder" size="0.02 0.4" pos="-0.25 0.35 0.4" rgba="0.4 0.4 0.4 1"/><geom name="shelf_6_2_leg_ne" type="cylinder" size="0.02 0.4" pos="0.25 0.35 0.4" rgba="0.4 0.4 0.4 1"/></body>
+        <body name="shelf_6_3" pos="6 3 0"><geom name="shelf_6_3_tier_0" type="box" size="0.3 0.4 0.02" pos="0 0 0.4" material="shelf_mat"/><geom name="shelf_6_3_tier_1" type="box" size="0.3 0.4 0.02" pos="0 0 0.8" material="shelf_mat"/><geom name="shelf_6_3_leg_sw" type="cylinder" size="0.02 0.4" pos="-0.25 -0.35 0.4" rgba="0.4 0.4 0.4 1"/><geom name="shelf_6_3_leg_se" type="cylinder" size="0.02 0.4" pos="0.25 -0.35 0.4" rgba="0.4 0.4 0.4 1"/><geom name="shelf_6_3_leg_nw" type="cylinder" size="0.02 0.4" pos="-0.25 0.35 0.4" rgba="0.4 0.4 0.4 1"/><geom name="shelf_6_3_leg_ne" type="cylinder" size="0.02 0.4" pos="0.25 0.35 0.4" rgba="0.4 0.4 0.4 1"/></body>
+        <body name="shelf_6_4" pos="6 4 0"><geom name="shelf_6_4_tier_0" type="box" size="0.3 0.4 0.02" pos="0 0 0.4" material="shelf_mat"/><geom name="shelf_6_4_tier_1" type="box" size="0.3 0.4 0.02" pos="0 0 0.8" material="shelf_mat"/><geom name="shelf_6_4_leg_sw" type="cylinder" size="0.02 0.4" pos="-0.25 -0.35 0.4" rgba="0.4 0.4 0.4 1"/><geom name="shelf_6_4_leg_se" type="cylinder" size="0.02 0.4" pos="0.25 -0.35 0.4" rgba="0.4 0.4 0.4 1"/><geom name="shelf_6_4_leg_nw" type="cylinder" size="0.02 0.4" pos="-0.25 0.35 0.4" rgba="0.4 0.4 0.4 1"/><geom name="shelf_6_4_leg_ne" type="cylinder" size="0.02 0.4" pos="0.25 0.35 0.4" rgba="0.4 0.4 0.4 1"/></body>
+        <body name="shelf_6_5" pos="6 5 0"><geom name="shelf_6_5_tier_0" type="box" size="0.3 0.4 0.02" pos="0 0 0.4" material="shelf_mat"/><geom name="shelf_6_5_tier_1" type="box" size="0.3 0.4 0.02" pos="0 0 0.8" material="shelf_mat"/><geom name="shelf_6_5_leg_sw" type="cylinder" size="0.02 0.4" pos="-0.25 -0.35 0.4" rgba="0.4 0.4 0.4 1"/><geom name="shelf_6_5_leg_se" type="cylinder" size="0.02 0.4" pos="0.25 -0.35 0.4" rgba="0.4 0.4 0.4 1"/><geom name="shelf_6_5_leg_nw" type="cylinder" size="0.02 0.4" pos="-0.25 0.35 0.4" rgba="0.4 0.4 0.4 1"/><geom name="shelf_6_5_leg_ne" type="cylinder" size="0.02 0.4" pos="0.25 0.35 0.4" rgba="0.4 0.4 0.4 1"/></body>
+        <body name="shelf_6_6" pos="6 6 0"><geom name="shelf_6_6_tier_0" type="box" size="0.3 0.4 0.02" pos="0 0 0.4" material="shelf_mat"/><geom name="shelf_6_6_tier_1" type="box" size="0.3 0.4 0.02" pos="0 0 0.8" material="shelf_mat"/><geom name="shelf_6_6_leg_sw" type="cylinder" size="0.02 0.4" pos="-0.25 -0.35 0.4" rgba="0.4 0.4 0.4 1"/><geom name="shelf_6_6_leg_se" type="cylinder" size="0.02 0.4" pos="0.25 -0.35 0.4" rgba="0.4 0.4 0.4 1"/><geom name="shelf_6_6_leg_nw" type="cylinder" size="0.02 0.4" pos="-0.25 0.35 0.4" rgba="0.4 0.4 0.4 1"/><geom name="shelf_6_6_leg_ne" type="cylinder" size="0.02 0.4" pos="0.25 0.35 0.4" rgba="0.4 0.4 0.4 1"/></body>
+        <body name="shelf_6_7" pos="6 7 0"><geom name="shelf_6_7_tier_0" type="box" size="0.3 0.4 0.02" pos="0 0 0.4" material="shelf_mat"/><geom name="shelf_6_7_tier_1" type="box" size="0.3 0.4 0.02" pos="0 0 0.8" material="shelf_mat"/><geom name="shelf_6_7_leg_sw" type="cylinder" size="0.02 0.4" pos="-0.25 -0.35 0.4" rgba="0.4 0.4 0.4 1"/><geom name="shelf_6_7_leg_se" type="cylinder" size="0.02 0.4" pos="0.25 -0.35 0.4" rgba="0.4 0.4 0.4 1"/><geom name="shelf_6_7_leg_nw" type="cylinder" size="0.02 0.4" pos="-0.25 0.35 0.4" rgba="0.4 0.4 0.4 1"/><geom name="shelf_6_7_leg_ne" type="cylinder" size="0.02 0.4" pos="0.25 0.35 0.4" rgba="0.4 0.4 0.4 1"/></body>
+
+        <!-- ============== SHELF ROW x=8, y=2..7 ============== -->
+        <body name="shelf_8_2" pos="8 2 0"><geom name="shelf_8_2_tier_0" type="box" size="0.3 0.4 0.02" pos="0 0 0.4" material="shelf_mat"/><geom name="shelf_8_2_tier_1" type="box" size="0.3 0.4 0.02" pos="0 0 0.8" material="shelf_mat"/><geom name="shelf_8_2_leg_sw" type="cylinder" size="0.02 0.4" pos="-0.25 -0.35 0.4" rgba="0.4 0.4 0.4 1"/><geom name="shelf_8_2_leg_se" type="cylinder" size="0.02 0.4" pos="0.25 -0.35 0.4" rgba="0.4 0.4 0.4 1"/><geom name="shelf_8_2_leg_nw" type="cylinder" size="0.02 0.4" pos="-0.25 0.35 0.4" rgba="0.4 0.4 0.4 1"/><geom name="shelf_8_2_leg_ne" type="cylinder" size="0.02 0.4" pos="0.25 0.35 0.4" rgba="0.4 0.4 0.4 1"/></body>
+        <body name="shelf_8_3" pos="8 3 0"><geom name="shelf_8_3_tier_0" type="box" size="0.3 0.4 0.02" pos="0 0 0.4" material="shelf_mat"/><geom name="shelf_8_3_tier_1" type="box" size="0.3 0.4 0.02" pos="0 0 0.8" material="shelf_mat"/><geom name="shelf_8_3_leg_sw" type="cylinder" size="0.02 0.4" pos="-0.25 -0.35 0.4" rgba="0.4 0.4 0.4 1"/><geom name="shelf_8_3_leg_se" type="cylinder" size="0.02 0.4" pos="0.25 -0.35 0.4" rgba="0.4 0.4 0.4 1"/><geom name="shelf_8_3_leg_nw" type="cylinder" size="0.02 0.4" pos="-0.25 0.35 0.4" rgba="0.4 0.4 0.4 1"/><geom name="shelf_8_3_leg_ne" type="cylinder" size="0.02 0.4" pos="0.25 0.35 0.4" rgba="0.4 0.4 0.4 1"/></body>
+        <body name="shelf_8_4" pos="8 4 0"><geom name="shelf_8_4_tier_0" type="box" size="0.3 0.4 0.02" pos="0 0 0.4" material="shelf_mat"/><geom name="shelf_8_4_tier_1" type="box" size="0.3 0.4 0.02" pos="0 0 0.8" material="shelf_mat"/><geom name="shelf_8_4_leg_sw" type="cylinder" size="0.02 0.4" pos="-0.25 -0.35 0.4" rgba="0.4 0.4 0.4 1"/><geom name="shelf_8_4_leg_se" type="cylinder" size="0.02 0.4" pos="0.25 -0.35 0.4" rgba="0.4 0.4 0.4 1"/><geom name="shelf_8_4_leg_nw" type="cylinder" size="0.02 0.4" pos="-0.25 0.35 0.4" rgba="0.4 0.4 0.4 1"/><geom name="shelf_8_4_leg_ne" type="cylinder" size="0.02 0.4" pos="0.25 0.35 0.4" rgba="0.4 0.4 0.4 1"/></body>
+        <body name="shelf_8_5" pos="8 5 0"><geom name="shelf_8_5_tier_0" type="box" size="0.3 0.4 0.02" pos="0 0 0.4" material="shelf_mat"/><geom name="shelf_8_5_tier_1" type="box" size="0.3 0.4 0.02" pos="0 0 0.8" material="shelf_mat"/><geom name="shelf_8_5_leg_sw" type="cylinder" size="0.02 0.4" pos="-0.25 -0.35 0.4" rgba="0.4 0.4 0.4 1"/><geom name="shelf_8_5_leg_se" type="cylinder" size="0.02 0.4" pos="0.25 -0.35 0.4" rgba="0.4 0.4 0.4 1"/><geom name="shelf_8_5_leg_nw" type="cylinder" size="0.02 0.4" pos="-0.25 0.35 0.4" rgba="0.4 0.4 0.4 1"/><geom name="shelf_8_5_leg_ne" type="cylinder" size="0.02 0.4" pos="0.25 0.35 0.4" rgba="0.4 0.4 0.4 1"/></body>
+        <body name="shelf_8_6" pos="8 6 0"><geom name="shelf_8_6_tier_0" type="box" size="0.3 0.4 0.02" pos="0 0 0.4" material="shelf_mat"/><geom name="shelf_8_6_tier_1" type="box" size="0.3 0.4 0.02" pos="0 0 0.8" material="shelf_mat"/><geom name="shelf_8_6_leg_sw" type="cylinder" size="0.02 0.4" pos="-0.25 -0.35 0.4" rgba="0.4 0.4 0.4 1"/><geom name="shelf_8_6_leg_se" type="cylinder" size="0.02 0.4" pos="0.25 -0.35 0.4" rgba="0.4 0.4 0.4 1"/><geom name="shelf_8_6_leg_nw" type="cylinder" size="0.02 0.4" pos="-0.25 0.35 0.4" rgba="0.4 0.4 0.4 1"/><geom name="shelf_8_6_leg_ne" type="cylinder" size="0.02 0.4" pos="0.25 0.35 0.4" rgba="0.4 0.4 0.4 1"/></body>
+        <body name="shelf_8_7" pos="8 7 0"><geom name="shelf_8_7_tier_0" type="box" size="0.3 0.4 0.02" pos="0 0 0.4" material="shelf_mat"/><geom name="shelf_8_7_tier_1" type="box" size="0.3 0.4 0.02" pos="0 0 0.8" material="shelf_mat"/><geom name="shelf_8_7_leg_sw" type="cylinder" size="0.02 0.4" pos="-0.25 -0.35 0.4" rgba="0.4 0.4 0.4 1"/><geom name="shelf_8_7_leg_se" type="cylinder" size="0.02 0.4" pos="0.25 -0.35 0.4" rgba="0.4 0.4 0.4 1"/><geom name="shelf_8_7_leg_nw" type="cylinder" size="0.02 0.4" pos="-0.25 0.35 0.4" rgba="0.4 0.4 0.4 1"/><geom name="shelf_8_7_leg_ne" type="cylinder" size="0.02 0.4" pos="0.25 0.35 0.4" rgba="0.4 0.4 0.4 1"/></body>
+
+        <!-- ============== OBJECT POOL GRAVEYARD & SHELVES ============== -->
+        <body name="package_p1" pos="11 20 0.04"><joint type="free" name="package_p1_free"/><geom type="box" size="0.1 0.1 0.04" material="pkg_orange" mass="0.5"/></body>
+        <body name="package_p2" pos="2 5 0.46"><joint type="free" name="package_p2_free"/><geom type="box" size="0.1 0.1 0.04" material="pkg_blue" mass="0.5"/></body>
+        <body name="package_p3" pos="4 4 0.86"><joint type="free" name="package_p3_free"/><geom type="box" size="0.1 0.1 0.04" material="pkg_purple" mass="0.5"/></body>
+        <body name="package_p4" pos="6 6 0.46"><joint type="free" name="package_p4_free"/><geom type="box" size="0.1 0.1 0.04" material="pkg_green" mass="0.5"/></body>
+        <body name="package_p5" pos="15 20 0.04"><joint type="free" name="package_p5_free"/><geom type="box" size="0.1 0.1 0.04" material="pkg_orange" mass="0.5"/></body>
+        <body name="package_p6" pos="8 3 0.46"><joint type="free" name="package_p6_free"/><geom type="box" size="0.1 0.1 0.04" material="pkg_blue" mass="0.5"/></body>
+        <body name="package_p7" pos="17 20 0.04"><joint type="free" name="package_p7_free"/><geom type="box" size="0.1 0.1 0.04" material="pkg_purple" mass="0.5"/></body>
+        <body name="package_p8" pos="18 20 0.04"><joint type="free" name="package_p8_free"/><geom type="box" size="0.1 0.1 0.04" material="pkg_green" mass="0.5"/></body>
+        <body name="package_p9" pos="19 20 0.04"><joint type="free" name="package_p9_free"/><geom type="box" size="0.1 0.1 0.04" material="pkg_orange" mass="0.5"/></body>
+        <body name="package_p10" pos="20 20 0.04"><joint type="free" name="package_p10_free"/><geom type="box" size="0.1 0.1 0.04" material="pkg_blue" mass="0.5"/></body>
+
+        <!-- ============== ROBOT r1 (start at aisle x=1, y=9) ============== -->
+        <body name="robot_r1" pos="1 9 0.06">
+            <joint type="slide" name="robot_r1_x" axis="1 0 0" damping="50"/>
+            <joint type="slide" name="robot_r1_y" axis="0 1 0" damping="50"/>
+            <geom name="r1_base" type="cylinder" size="0.35 0.05" rgba="0.9 0.15 0.15 1" mass="5"/>
+            <geom type="capsule" size="0.04 0.12" pos="0.22 0 0.06" rgba="1 1 1 0.8" contype="0" conaffinity="0"/>
+            <site name="robot_r1_wall_pos_x_site" pos="0 0 0.88" zaxis="1 0 0" size="0.01"/>
+            <site name="robot_r1_wall_neg_x_site" pos="0 0 0.88" zaxis="-1 0 0" size="0.01"/>
+            <site name="robot_r1_wall_pos_y_site" pos="0 0 0.88" zaxis="0 1 0" size="0.01"/>
+            <site name="robot_r1_wall_neg_y_site" pos="0 0 0.88" zaxis="0 -1 0" size="0.01"/>
+            <body name="robot_r1_arm" pos="0 0 0.06">
+                <joint type="slide" name="robot_r1_lift" axis="0 0 1" range="0 1.0" damping="15" limited="true"/>
+                <geom name="r1_lift_carriage" type="cylinder" size="0.12 0.025" rgba="0.3 0.3 0.3 1" mass="0.2" contype="0" conaffinity="0"/>
+                <body name="robot_r1_turret_body">
+                    <joint type="hinge" name="robot_r1_turret" axis="0 0 1" range="-180 180" damping="25" limited="true"/>
+                    <geom name="r1_inner_arm" type="capsule" size="0.035" fromto="0 0 0 0.45 0 0" rgba="0.8 0.8 0.85 1" mass="0.15" contype="0" conaffinity="0"/>
+                    <body name="robot_r1_gripper" pos="0.45 0 0">
+                        <joint type="slide" name="robot_r1_extend" axis="1 0 0" range="0 0.5" damping="42" limited="true"/>
+                        <geom name="r1_outer_arm" type="capsule" size="0.025" fromto="-0.5 0 0 0 0 0" rgba="0.6 0.65 0.75 1" mass="0.1" contype="0" conaffinity="0"/>
+                        <geom name="r1_gripper_plate" type="box" size="0.08 0.12 0.015" rgba="0.2 0.2 0.25 1" mass="0.1" contype="0" conaffinity="0"/>
+                        <site name="robot_r1_grip_site" type="sphere" size="0.025" rgba="1 0.8 0.1 1"/>
+                        <site name="robot_r1_payload_site" pos="0 0 0.04" zaxis="0 0 1" size="0.01"/>
+                    </body>
+                </body>
+            </body>
+        </body>
+
+        <!-- ============== ROBOT r2 (start at aisle x=9, y=9) ============== -->
+        <body name="robot_r2" pos="9 9 0.06">
+            <joint type="slide" name="robot_r2_x" axis="1 0 0" damping="50"/>
+            <joint type="slide" name="robot_r2_y" axis="0 1 0" damping="50"/>
+            <geom name="r2_base" type="cylinder" size="0.35 0.05" rgba="0.15 0.9 0.15 1" mass="5"/>
+            <geom type="capsule" size="0.04 0.12" pos="0.22 0 0.06" rgba="1 1 1 0.8" contype="0" conaffinity="0"/>
+            <site name="robot_r2_wall_pos_x_site" pos="0 0 0.88" zaxis="1 0 0" size="0.01"/>
+            <site name="robot_r2_wall_neg_x_site" pos="0 0 0.88" zaxis="-1 0 0" size="0.01"/>
+            <site name="robot_r2_wall_pos_y_site" pos="0 0 0.88" zaxis="0 1 0" size="0.01"/>
+            <site name="robot_r2_wall_neg_y_site" pos="0 0 0.88" zaxis="0 -1 0" size="0.01"/>
+            <body name="robot_r2_arm" pos="0 0 0.06">
+                <joint type="slide" name="robot_r2_lift" axis="0 0 1" range="0 1.0" damping="15" limited="true"/>
+                <geom name="r2_lift_carriage" type="cylinder" size="0.12 0.025" rgba="0.3 0.3 0.3 1" mass="0.2" contype="0" conaffinity="0"/>
+                <body name="robot_r2_turret_body">
+                    <joint type="hinge" name="robot_r2_turret" axis="0 0 1" range="-180 180" damping="25" limited="true"/>
+                    <geom name="r2_inner_arm" type="capsule" size="0.035" fromto="0 0 0 0.45 0 0" rgba="0.8 0.8 0.85 1" mass="0.15" contype="0" conaffinity="0"/>
+                    <body name="robot_r2_gripper" pos="0.45 0 0">
+                        <joint type="slide" name="robot_r2_extend" axis="1 0 0" range="0 0.5" damping="42" limited="true"/>
+                        <geom name="r2_outer_arm" type="capsule" size="0.025" fromto="-0.5 0 0 0 0 0" rgba="0.6 0.65 0.75 1" mass="0.1" contype="0" conaffinity="0"/>
+                        <geom name="r2_gripper_plate" type="box" size="0.08 0.12 0.015" rgba="0.2 0.2 0.25 1" mass="0.1" contype="0" conaffinity="0"/>
+                        <site name="robot_r2_grip_site" type="sphere" size="0.025" rgba="1 0.8 0.1 1"/>
+                        <site name="robot_r2_payload_site" pos="0 0 0.04" zaxis="0 0 1" size="0.01"/>
+                    </body>
+                </body>
+            </body>
+        </body>
+
+        <!-- ============== ROBOT r3 (start at aisle x=3, y=9) ============== -->
+        <body name="robot_r3" pos="3 9 0.06">
+            <joint type="slide" name="robot_r3_x" axis="1 0 0" damping="50"/>
+            <joint type="slide" name="robot_r3_y" axis="0 1 0" damping="50"/>
+            <geom name="r3_base" type="cylinder" size="0.35 0.05" rgba="0.15 0.45 0.95 1" mass="5"/>
+            <geom type="capsule" size="0.04 0.12" pos="0.22 0 0.06" rgba="1 1 1 0.8" contype="0" conaffinity="0"/>
+            <site name="robot_r3_wall_pos_x_site" pos="0 0 0.88" zaxis="1 0 0" size="0.01"/>
+            <site name="robot_r3_wall_neg_x_site" pos="0 0 0.88" zaxis="-1 0 0" size="0.01"/>
+            <site name="robot_r3_wall_pos_y_site" pos="0 0 0.88" zaxis="0 1 0" size="0.01"/>
+            <site name="robot_r3_wall_neg_y_site" pos="0 0 0.88" zaxis="0 -1 0" size="0.01"/>
+            <body name="robot_r3_arm" pos="0 0 0.06">
+                <joint type="slide" name="robot_r3_lift" axis="0 0 1" range="0 1.0" damping="15" limited="true"/>
+                <geom name="r3_lift_carriage" type="cylinder" size="0.12 0.025" rgba="0.3 0.3 0.3 1" mass="0.2" contype="0" conaffinity="0"/>
+                <body name="robot_r3_turret_body">
+                    <joint type="hinge" name="robot_r3_turret" axis="0 0 1" range="-180 180" damping="25" limited="true"/>
+                    <geom name="r3_inner_arm" type="capsule" size="0.035" fromto="0 0 0 0.45 0 0" rgba="0.8 0.8 0.85 1" mass="0.15" contype="0" conaffinity="0"/>
+                    <body name="robot_r3_gripper" pos="0.45 0 0">
+                        <joint type="slide" name="robot_r3_extend" axis="1 0 0" range="0 0.5" damping="42" limited="true"/>
+                        <geom name="r3_outer_arm" type="capsule" size="0.025" fromto="-0.5 0 0 0 0 0" rgba="0.6 0.65 0.75 1" mass="0.1" contype="0" conaffinity="0"/>
+                        <geom name="r3_gripper_plate" type="box" size="0.08 0.12 0.015" rgba="0.2 0.2 0.25 1" mass="0.1" contype="0" conaffinity="0"/>
+                        <site name="robot_r3_grip_site" type="sphere" size="0.025" rgba="1 0.8 0.1 1"/>
+                        <site name="robot_r3_payload_site" pos="0 0 0.04" zaxis="0 0 1" size="0.01"/>
+                    </body>
+                </body>
+            </body>
+        </body>
+
+        <!-- ============== ROBOT r4 (start at aisle x=7, y=9) ============== -->
+        <body name="robot_r4" pos="7 9 0.06">
+            <joint type="slide" name="robot_r4_x" axis="1 0 0" damping="50"/>
+            <joint type="slide" name="robot_r4_y" axis="0 1 0" damping="50"/>
+            <geom name="r4_base" type="cylinder" size="0.35 0.05" rgba="0.9 0.55 0.1 1" mass="5"/>
+            <geom type="capsule" size="0.04 0.12" pos="0.22 0 0.06" rgba="1 1 1 0.8" contype="0" conaffinity="0"/>
+            <site name="robot_r4_wall_pos_x_site" pos="0 0 0.88" zaxis="1 0 0" size="0.01"/>
+            <site name="robot_r4_wall_neg_x_site" pos="0 0 0.88" zaxis="-1 0 0" size="0.01"/>
+            <site name="robot_r4_wall_pos_y_site" pos="0 0 0.88" zaxis="0 1 0" size="0.01"/>
+            <site name="robot_r4_wall_neg_y_site" pos="0 0 0.88" zaxis="0 -1 0" size="0.01"/>
+            <body name="robot_r4_arm" pos="0 0 0.06">
+                <joint type="slide" name="robot_r4_lift" axis="0 0 1" range="0 1.0" damping="15" limited="true"/>
+                <geom name="r4_lift_carriage" type="cylinder" size="0.12 0.025" rgba="0.3 0.3 0.3 1" mass="0.2" contype="0" conaffinity="0"/>
+                <body name="robot_r4_turret_body">
+                    <joint type="hinge" name="robot_r4_turret" axis="0 0 1" range="-180 180" damping="25" limited="true"/>
+                    <geom name="r4_inner_arm" type="capsule" size="0.035" fromto="0 0 0 0.45 0 0" rgba="0.8 0.8 0.85 1" mass="0.15" contype="0" conaffinity="0"/>
+                    <body name="robot_r4_gripper" pos="0.45 0 0">
+                        <joint type="slide" name="robot_r4_extend" axis="1 0 0" range="0 0.5" damping="42" limited="true"/>
+                        <geom name="r4_outer_arm" type="capsule" size="0.025" fromto="-0.5 0 0 0 0 0" rgba="0.6 0.65 0.75 1" mass="0.1" contype="0" conaffinity="0"/>
+                        <geom name="r4_gripper_plate" type="box" size="0.08 0.12 0.015" rgba="0.2 0.2 0.25 1" mass="0.1" contype="0" conaffinity="0"/>
+                        <site name="robot_r4_grip_site" type="sphere" size="0.025" rgba="1 0.8 0.1 1"/>
+                        <site name="robot_r4_payload_site" pos="0 0 0.04" zaxis="0 0 1" size="0.01"/>
+                    </body>
+                </body>
+            </body>
+        </body>
+
+    </worldbody>
+
+    <!-- ============== ACTUATORS ============== -->
+    <actuator>
+        <motor joint="robot_r1_x" name="robot_r1_x" gear="50"/>
+        <motor joint="robot_r1_y" name="robot_r1_y" gear="50"/>
+        <position joint="robot_r1_lift" name="robot_r1_lift" kp="500"/>
+        <position joint="robot_r1_turret" name="robot_r1_turret" kp="1000"/>
+        <position joint="robot_r1_extend" name="robot_r1_extend" kp="1000"/>
+        <motor joint="robot_r2_x" name="robot_r2_x" gear="50"/>
+        <motor joint="robot_r2_y" name="robot_r2_y" gear="50"/>
+        <position joint="robot_r2_lift" name="robot_r2_lift" kp="500"/>
+        <position joint="robot_r2_turret" name="robot_r2_turret" kp="1000"/>
+        <position joint="robot_r2_extend" name="robot_r2_extend" kp="1000"/>
+        <motor joint="robot_r3_x" name="robot_r3_x" gear="50"/>
+        <motor joint="robot_r3_y" name="robot_r3_y" gear="50"/>
+        <position joint="robot_r3_lift" name="robot_r3_lift" kp="500"/>
+        <position joint="robot_r3_turret" name="robot_r3_turret" kp="1000"/>
+        <position joint="robot_r3_extend" name="robot_r3_extend" kp="1000"/>
+        <motor joint="robot_r4_x" name="robot_r4_x" gear="50"/>
+        <motor joint="robot_r4_y" name="robot_r4_y" gear="50"/>
+        <position joint="robot_r4_lift" name="robot_r4_lift" kp="500"/>
+        <position joint="robot_r4_turret" name="robot_r4_turret" kp="1000"/>
+        <position joint="robot_r4_extend" name="robot_r4_extend" kp="1000"/>
+    </actuator>
+    <sensor>
+        <rangefinder name="robot_r1_wall_pos_x" site="robot_r1_wall_pos_x_site" noise="0.005"/>
+        <rangefinder name="robot_r1_wall_neg_x" site="robot_r1_wall_neg_x_site" noise="0.005"/>
+        <rangefinder name="robot_r1_wall_pos_y" site="robot_r1_wall_pos_y_site" noise="0.005"/>
+        <rangefinder name="robot_r1_wall_neg_y" site="robot_r1_wall_neg_y_site" noise="0.005"/>
+        <jointvel name="robot_r1_velocity_x" joint="robot_r1_x"/>
+        <jointvel name="robot_r1_velocity_y" joint="robot_r1_y"/>
+        <rangefinder name="robot_r1_payload" site="robot_r1_payload_site" cutoff="0.25" noise="0.005"/>
+        <rangefinder name="robot_r2_wall_pos_x" site="robot_r2_wall_pos_x_site" noise="0.005"/>
+        <rangefinder name="robot_r2_wall_neg_x" site="robot_r2_wall_neg_x_site" noise="0.005"/>
+        <rangefinder name="robot_r2_wall_pos_y" site="robot_r2_wall_pos_y_site" noise="0.005"/>
+        <rangefinder name="robot_r2_wall_neg_y" site="robot_r2_wall_neg_y_site" noise="0.005"/>
+        <jointvel name="robot_r2_velocity_x" joint="robot_r2_x"/>
+        <jointvel name="robot_r2_velocity_y" joint="robot_r2_y"/>
+        <rangefinder name="robot_r2_payload" site="robot_r2_payload_site" cutoff="0.25" noise="0.005"/>
+        <rangefinder name="robot_r3_wall_pos_x" site="robot_r3_wall_pos_x_site" noise="0.005"/>
+        <rangefinder name="robot_r3_wall_neg_x" site="robot_r3_wall_neg_x_site" noise="0.005"/>
+        <rangefinder name="robot_r3_wall_pos_y" site="robot_r3_wall_pos_y_site" noise="0.005"/>
+        <rangefinder name="robot_r3_wall_neg_y" site="robot_r3_wall_neg_y_site" noise="0.005"/>
+        <jointvel name="robot_r3_velocity_x" joint="robot_r3_x"/>
+        <jointvel name="robot_r3_velocity_y" joint="robot_r3_y"/>
+        <rangefinder name="robot_r3_payload" site="robot_r3_payload_site" cutoff="0.25" noise="0.005"/>
+        <rangefinder name="robot_r4_wall_pos_x" site="robot_r4_wall_pos_x_site" noise="0.005"/>
+        <rangefinder name="robot_r4_wall_neg_x" site="robot_r4_wall_neg_x_site" noise="0.005"/>
+        <rangefinder name="robot_r4_wall_pos_y" site="robot_r4_wall_pos_y_site" noise="0.005"/>
+        <rangefinder name="robot_r4_wall_neg_y" site="robot_r4_wall_neg_y_site" noise="0.005"/>
+        <jointvel name="robot_r4_velocity_x" joint="robot_r4_x"/>
+        <jointvel name="robot_r4_velocity_y" joint="robot_r4_y"/>
+        <rangefinder name="robot_r4_payload" site="robot_r4_payload_site" cutoff="0.25" noise="0.005"/>
+    </sensor>
+</mujoco>

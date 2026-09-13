@@ -1,0 +1,16 @@
+.git
+.gitignore
+.venv
+__pycache__
+**/__pycache__
+*.py[cod]
+.pytest_cache
+DESIGN.md
+DOCKER.md
+scratch.txt
+fixes.txt
+error_log.txt
+deadlock_report.txt
+Dockerfile
+docker-compose.yml
+.dockerignore

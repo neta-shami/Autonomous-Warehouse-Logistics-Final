@@ -1,0 +1,11 @@
+# Pinned for reproducible builds. numpy 2.0.2 and mujoco 3.2.7 are the last
+# releases supporting Python 3.9, which the macOS system interpreter provides.
+mujoco==3.2.7
+numpy==2.0.2
+
+# Test and code-quality tooling used by the local workflow and CI.
+pytest==8.4.2
+mypy==1.18.2
+pytest-cov==6.2.1
+ruff==0.12.12
+vulture==2.14
